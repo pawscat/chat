@@ -1,0 +1,63 @@
+<%- include('header') %>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-title">Profil Anda</div>
+    <div style="margin-bottom: 0.5rem;"><strong>Nama:</strong> <%= user.first_name || '-' %> <%= user.last_name || '' %></div>
+    <div style="margin-bottom: 0.5rem;"><strong>Username:</strong> <%= user.username ? '@' + user.username : '-' %></div>
+    <div style="margin-bottom: 0.5rem;"><strong>ID Telegram:</strong> <code><%= user.telegram_id %></code></div>
+    <div style="margin-top: 1rem;">
+      <span class="badge <%= user.status === 'active' ? 'badge-active' : 'badge-inactive' %>">
+        Status: <%= user.status.toUpperCase() %>
+      </span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Statistik Penggunaan</div>
+    <div style="margin-bottom: 0.5rem;"><strong>Total Request:</strong> <%= user.total_request %></div>
+    <div style="margin-bottom: 0.5rem;"><strong>Request Hari Ini:</strong> <%= user.request_today %></div>
+    <div style="margin-bottom: 0.5rem;"><strong>Limit Harian:</strong> <%= dailyLimit %></div>
+    <div style="margin-bottom: 0.5rem;">
+      <strong>Sisa Limit:</strong> 
+      <% const sisa = Math.max(0, dailyLimit - user.request_today); %>
+      <span style="color: <%= sisa > 0 ? 'var(--success)' : 'var(--danger)' %>; font-weight: bold;"><%= sisa %></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Aktivitas</div>
+    <div style="margin-bottom: 0.5rem;"><strong>Tanggal Daftar:</strong> <br><%= new Date(user.registered_at).toLocaleString('id-ID') %></div>
+    <div style="margin-bottom: 0.5rem;"><strong>Terakhir Aktif:</strong> <br><%= new Date(user.last_active).toLocaleString('id-ID') %></div>
+    
+    <div style="margin-top: 1.5rem;">
+      <a href="https://t.me/<%= botUsername %>" target="_blank" class="btn btn-sm">Buka Bot Telegram</a>
+    </div>
+  </div>
+</div>
+
+<h3>10 Aktivitas Terakhir</h3>
+<div class="card table-responsive">
+  <% if (recentActivities.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Waktu Request</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recentActivities.forEach((act, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= new Date(act.timestamp).toLocaleString('id-ID') %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>Belum ada aktivitas.</p>
+  <% } %>
+</div>
+
+<%- include('footer') %>

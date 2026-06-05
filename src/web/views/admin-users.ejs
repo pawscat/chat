@@ -1,0 +1,62 @@
+<%- include('header') %>
+
+<h3>Manage Users</h3>
+
+<div class="card table-responsive">
+  <input type="text" id="searchUser" placeholder="Cari ID atau Username..." style="max-width: 300px; margin-bottom: 1rem;">
+  
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>Telegram ID</th>
+        <th>Username</th>
+        <th>Nama</th>
+        <th>Status</th>
+        <th>Total Request</th>
+        <th>Req Hari Ini</th>
+        <th>Terakhir Aktif</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(u => { %>
+        <tr>
+          <td><code><%= u.telegram_id %></code></td>
+          <td><%= u.username ? '@' + u.username : '-' %></td>
+          <td><%= u.first_name || '-' %> <%= u.last_name || '' %></td>
+          <td>
+            <span class="badge <%= u.status === 'active' ? 'badge-active' : 'badge-inactive' %>"><%= u.status %></span>
+            <% if (u.is_blacklisted) { %>
+              <span class="badge" style="background-color: var(--danger); color: white;">Banned</span>
+            <% } %>
+          </td>
+          <td><%= u.total_request %></td>
+          <td><%= u.request_today %></td>
+          <td><%= new Date(u.last_active).toLocaleString('id-ID') %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.getElementById('searchUser').addEventListener('keyup', function() {
+    let filter = this.value.toUpperCase();
+    let rows = document.querySelector("#usersTable tbody").rows;
+    
+    for (let i = 0; i < rows.length; i++) {
+      let idCol = rows[i].cells[0].textContent;
+      let usernameCol = rows[i].cells[1].textContent;
+      let nameCol = rows[i].cells[2].textContent;
+      
+      if (idCol.toUpperCase().indexOf(filter) > -1 || 
+          usernameCol.toUpperCase().indexOf(filter) > -1 ||
+          nameCol.toUpperCase().indexOf(filter) > -1) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+  });
+</script>
+
+<%- include('footer') %>

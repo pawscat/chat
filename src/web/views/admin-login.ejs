@@ -1,0 +1,20 @@
+<%- include('header') %>
+
+<div class="login-container">
+  <h2>Admin Login</h2>
+  <p class="text-muted" style="margin-bottom: 1.5rem;">Masuk ke Panel Administrasi Bot</p>
+  
+  <% if (error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% } %>
+
+  <form action="/admin/login" method="POST">
+    <div class="form-group">
+      <label for="identifier">Telegram ID / Username</label>
+      <input type="text" id="identifier" name="identifier" required>
+    </div>
+    <button type="submit" class="btn" style="width: 100%;">Login</button>
+  </form>
+</div>
+
+<%- include('footer') %>

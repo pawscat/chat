@@ -1,0 +1,70 @@
+<%- include('header') %>
+
+<h3>System Logs</h3>
+<p class="text-muted" style="margin-bottom: 1rem;">Menampilkan 100 log terakhir.</p>
+
+<div class="card table-responsive">
+  <select id="typeFilter" style="padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 4px;">
+    <option value="">Semua Tipe</option>
+    <option value="info">INFO</option>
+    <option value="error">ERROR</option>
+    <option value="security">SECURITY</option>
+    <option value="api">API</option>
+    <option value="broadcast">BROADCAST</option>
+  </select>
+
+  <table id="logsTable">
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Tipe</th>
+        <th>Pesan</th>
+        <th>Detail Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% logs.forEach(l => { %>
+        <tr data-type="<%= l.type %>">
+          <td style="white-space: nowrap;"><%= new Date(l.created_at).toLocaleString('id-ID') %></td>
+          <td>
+            <% if (l.type === 'error') { %>
+              <span class="badge" style="background-color: var(--danger); color: white;">ERROR</span>
+            <% } else if (l.type === 'info') { %>
+              <span class="badge" style="background-color: var(--primary-color); color: white;">INFO</span>
+            <% } else { %>
+              <span class="badge" style="background-color: var(--warning); color: #000;"><%= l.type.toUpperCase() %></span>
+            <% } %>
+          </td>
+          <td><%= l.message %></td>
+          <td>
+            <% if (l.details && Object.keys(l.details).length > 0) { %>
+              <details>
+                <summary>Lihat Detail</summary>
+                <pre style="font-size: 0.75rem; background: #f8fafc; padding: 0.5rem; border-radius: 4px; max-width: 300px; overflow-x: auto;"><%= JSON.stringify(l.details, null, 2) %></pre>
+              </details>
+            <% } else { %>
+              -
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.getElementById('typeFilter').addEventListener('change', function() {
+    let filter = this.value;
+    let rows = document.querySelectorAll("#logsTable tbody tr");
+    
+    rows.forEach(row => {
+      if (filter === "" || row.getAttribute('data-type') === filter) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  });
+</script>
+
+<%- include('footer') %>

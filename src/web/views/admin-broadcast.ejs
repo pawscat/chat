@@ -1,0 +1,49 @@
+<%- include('header') %>
+
+<div class="grid">
+  <div class="card" id="broadcastFormContainer">
+    <h3>Mulai Broadcast Baru</h3>
+    <p class="text-muted" style="margin-bottom: 1.5rem;">Kirim pesan massal ke pengguna, grup, atau channel.</p>
+    
+    <form id="broadcastForm">
+      <div class="form-group">
+        <label for="target">Target Penerima</label>
+        <select id="target" name="target" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px;">
+          <option value="users">Hanya Pengguna Pribadi</option>
+          <option value="groups">Hanya Grup</option>
+          <option value="channels">Hanya Channel</option>
+          <option value="all">Semua (Pengguna, Grup, Channel)</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Pesan (Dukung HTML formatting Telegram)</label>
+        <textarea id="message" name="message" rows="6" required placeholder="Halo semua..."></textarea>
+      </div>
+
+      <button type="submit" class="btn" style="width: 100%;">Kirim Broadcast</button>
+    </form>
+  </div>
+
+  <div class="card" id="broadcastStatus" style="display: none;">
+    <h3>Status Broadcast Realtime</h3>
+    
+    <div style="margin-top: 1rem; font-size: 1.125rem;">
+      <p><strong>Target:</strong> <span id="bcStatusText">MEMULAI...</span></p>
+      <p>Total: <span id="bcTotal">0</span></p>
+      <p style="color: var(--success)">Berhasil: <span id="bcSuccess">0</span></p>
+      <p style="color: var(--danger)">Gagal: <span id="bcFailed">0</span></p>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="bcProgress"></div>
+    </div>
+    <div style="text-align: right; font-weight: bold;" id="bcProgressText">0%</div>
+    
+    <div style="margin-top: 2rem;">
+      <a href="/admin/broadcast" class="btn btn-sm">Mulai Broadcast Baru</a>
+    </div>
+  </div>
+</div>
+
+<%- include('footer') %>

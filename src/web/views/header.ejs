@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Telegram AI Bot</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>🤖 You AI Bot</h2>
+      <div>
+        <% if (typeof user !== 'undefined' && user) { %>
+          <form action="/user/logout" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger">Logout User</button>
+          </form>
+        <% } else if (typeof adminRole !== 'undefined' && adminRole) { %>
+          <form action="/admin/logout" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger">Logout Admin</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+    
+    <% if (typeof adminRole !== 'undefined' && adminRole) { %>
+      <nav class="nav">
+        <a href="/admin/dashboard" class="nav-link">Dashboard</a>
+        <a href="/admin/broadcast" class="nav-link">Broadcast</a>
+        <a href="/admin/users" class="nav-link">Users</a>
+        <a href="/admin/groups" class="nav-link">Groups</a>
+        <a href="/admin/channels" class="nav-link">Channels</a>
+        <a href="/admin/api" class="nav-link">API Usage</a>
+        <a href="/admin/server" class="nav-link">Server</a>
+        <a href="/admin/logs" class="nav-link">Logs</a>
+        <a href="/admin/settings" class="nav-link">Settings</a>
+        <% if (adminRole === 'super_admin') { %>
+          <a href="/admin/admins" class="nav-link">Manage Admins</a>
+        <% } %>
+      </nav>
+    <% } %>
+
+    <main>

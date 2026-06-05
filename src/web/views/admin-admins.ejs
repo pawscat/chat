@@ -1,0 +1,64 @@
+<%- include('header') %>
+
+<h3>Manage Admins</h3>
+<p class="text-muted" style="margin-bottom: 1.5rem;">Tambahkan atau hapus admin. Hanya Super Admin yang bisa mengakses halaman ini.</p>
+
+<div class="grid">
+  <!-- Form Tambah Admin -->
+  <div class="card">
+    <h4>Tambah Admin Baru</h4>
+    <form action="/admin/admins/add" method="POST" style="margin-top: 1rem;">
+      <div class="form-group">
+        <label for="telegram_id">Telegram ID (Wajib)</label>
+        <input type="number" id="telegram_id" name="telegram_id" required placeholder="123456789">
+      </div>
+      <div class="form-group">
+        <label for="username">Username (Opsional)</label>
+        <input type="text" id="username" name="username" placeholder="tanpa @">
+      </div>
+      <button type="submit" class="btn">Tambah Admin</button>
+    </form>
+  </div>
+
+  <!-- Daftar Admin -->
+  <div class="card table-responsive">
+    <h4>Daftar Admin Aktif</h4>
+    <table style="margin-top: 1rem;">
+      <thead>
+        <tr>
+          <th>Telegram ID</th>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% admins.forEach(a => { %>
+          <tr>
+            <td><code><%= a.telegram_id %></code></td>
+            <td><%= a.username ? '@' + a.username : '-' %></td>
+            <td>
+              <% if (a.role === 'super_admin') { %>
+                <span class="badge" style="background-color: var(--primary-color); color: white;">Super Admin</span>
+              <% } else { %>
+                <span class="badge" style="background-color: var(--text-muted); color: white;">Admin</span>
+              <% } %>
+            </td>
+            <td>
+              <% if (a.role !== 'super_admin') { %>
+                <form action="/admin/admins/remove" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus admin ini?');">
+                  <input type="hidden" name="telegram_id" value="<%= a.telegram_id %>">
+                  <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                </form>
+              <% } else { %>
+                <span class="text-muted" style="font-size: 0.875rem;">(Protected)</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('footer') %>

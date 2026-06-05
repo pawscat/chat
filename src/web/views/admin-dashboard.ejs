@@ -1,0 +1,85 @@
+<%- include('header') %>
+
+<div class="grid">
+  <!-- Users -->
+  <div class="card">
+    <div class="card-title">Users</div>
+    <div class="card-value"><%= stats.users.active %> / <%= stats.users.total %></div>
+    <div class="text-muted" style="font-size: 0.875rem;">Active / Total</div>
+  </div>
+
+  <!-- Groups -->
+  <div class="card">
+    <div class="card-title">Groups</div>
+    <div class="card-value"><%= stats.groups.active %> / <%= stats.groups.total %></div>
+    <div class="text-muted" style="font-size: 0.875rem;">Active / Total</div>
+  </div>
+
+  <!-- Channels -->
+  <div class="card">
+    <div class="card-title">Channels</div>
+    <div class="card-value"><%= stats.channels.active %> / <%= stats.channels.total %></div>
+    <div class="text-muted" style="font-size: 0.875rem;">Active / Total</div>
+  </div>
+
+  <!-- API Total -->
+  <div class="card">
+    <div class="card-title">AI Requests (All Time)</div>
+    <div class="card-value"><%= stats.api.total_requests %></div>
+    <div class="text-muted" style="font-size: 0.875rem;">
+      <span style="color: var(--success)">Success: <%= stats.api.success_requests %></span> | 
+      <span style="color: var(--danger)">Failed: <%= stats.api.failed_requests %></span>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <!-- API Usage Limit -->
+  <div class="card">
+    <div class="card-title">API Usage (This Month)</div>
+    <div class="card-value"><%= stats.api.monthly_requests %> / <%= stats.settings.api_limit_monthly %></div>
+    <div class="progress-container">
+      <% const pct = Math.min(100, (stats.api.monthly_requests / stats.settings.api_limit_monthly) * 100); %>
+      <div class="progress-bar" style="width: <%= pct %>%; background-color: <%= pct > 90 ? 'var(--danger)' : (pct > 70 ? 'var(--warning)' : 'var(--primary-color)') %>"></div>
+    </div>
+    <div class="text-muted" style="font-size: 0.875rem;">
+      Estimated Remaining: <%= Math.max(0, stats.settings.api_limit_monthly - stats.api.monthly_requests) %>
+    </div>
+  </div>
+
+  <!-- Broadcast Stats -->
+  <div class="card">
+    <div class="card-title">Broadcasts</div>
+    <div class="card-value"><%= stats.broadcasts.total %></div>
+    <div class="text-muted" style="font-size: 0.875rem;">
+      <% if (stats.broadcasts.last) { %>
+        Last: <%= new Date(stats.broadcasts.last.started_at).toLocaleString('id-ID') %> 
+        (<%= stats.broadcasts.last.status %>)
+      <% } else { %>
+        No broadcasts yet.
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Server Quick Stats -->
+  <div class="card">
+    <div class="card-title">Server Status</div>
+    <div style="font-size: 0.875rem; margin-top: 0.5rem;">
+      <div><strong>RAM:</strong> <%= stats.server.ram.used %> / <%= stats.server.ram.total %> (<%= stats.server.ram.percent %>%)</div>
+      <div><strong>CPU 1m:</strong> <%= stats.server.cpu.load1m %></div>
+      <div><strong>Uptime:</strong> <%= stats.server.os.uptime %></div>
+      <div><strong>Ping:</strong> <%= stats.server.ping %></div>
+    </div>
+  </div>
+
+  <!-- Quick Links -->
+  <div class="card">
+    <div class="card-title">Quick Actions</div>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+      <a href="/admin/broadcast" class="btn btn-sm">📢 Send Broadcast</a>
+      <a href="/admin/settings" class="btn btn-sm" style="background-color: var(--text-muted)">⚙ Edit Settings</a>
+    </div>
+  </div>
+</div>
+
+<%- include('footer') %>

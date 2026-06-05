@@ -1,0 +1,55 @@
+<%- include('header') %>
+
+<h3>Manage Groups</h3>
+
+<div class="card table-responsive">
+  <input type="text" id="searchGroup" placeholder="Cari Chat ID atau Title..." style="max-width: 300px; margin-bottom: 1rem;">
+  
+  <table id="groupsTable">
+    <thead>
+      <tr>
+        <th>Chat ID</th>
+        <th>Title</th>
+        <th>Username</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Terakhir Aktif</th>
+        <th>Last Broadcast Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% groups.forEach(g => { %>
+        <tr>
+          <td><code><%= g.chat_id %></code></td>
+          <td><%= g.title || '-' %></td>
+          <td><%= g.username ? '@' + g.username : '-' %></td>
+          <td><%= g.type %></td>
+          <td><span class="badge <%= g.status === 'active' ? 'badge-active' : 'badge-inactive' %>"><%= g.status %></span></td>
+          <td><%= new Date(g.last_active).toLocaleString('id-ID') %></td>
+          <td style="color: var(--danger);"><%= g.last_broadcast_error || '-' %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.getElementById('searchGroup').addEventListener('keyup', function() {
+    let filter = this.value.toUpperCase();
+    let rows = document.querySelector("#groupsTable tbody").rows;
+    
+    for (let i = 0; i < rows.length; i++) {
+      let idCol = rows[i].cells[0].textContent;
+      let titleCol = rows[i].cells[1].textContent;
+      
+      if (idCol.toUpperCase().indexOf(filter) > -1 || 
+          titleCol.toUpperCase().indexOf(filter) > -1) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+  });
+</script>
+
+<%- include('footer') %>

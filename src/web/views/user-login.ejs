@@ -1,0 +1,20 @@
+<%- include('header') %>
+
+<div class="login-container">
+  <h2>User Login</h2>
+  <p class="text-muted" style="margin-bottom: 1.5rem;">Masukkan ID Telegram atau Username Anda untuk masuk.</p>
+  
+  <% if (error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% } %>
+
+  <form action="/user/login" method="POST">
+    <div class="form-group">
+      <label for="identifier">Telegram ID / Username</label>
+      <input type="text" id="identifier" name="identifier" required placeholder="Contoh: 123456789 atau john_doe">
+    </div>
+    <button type="submit" class="btn" style="width: 100%;">Masuk Dashboard</button>
+  </form>
+</div>
+
+<%- include('footer') %>

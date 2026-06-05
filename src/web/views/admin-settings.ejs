@@ -1,0 +1,147 @@
+<%- include('header') %>
+
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+  <h3>Bot Settings (configManager)</h3>
+  <p class="text-muted" style="margin-bottom: 1.5rem;">Konfigurasi utama sistem disimpan di settings.js dan dimuat ulang secara live.</p>
+
+  <div style="background: var(--bg-color); padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+    <strong>Status Konfigurasi:</strong><br>
+    ✅ Valid: <%= configStatus.isValid ? 'Ya' : 'Tidak' %><br>
+    ⏱ Last Reload: <%= configStatus.lastReload ? new Date(configStatus.lastReload).toLocaleString() : '-' %><br>
+    🔄 Source: <%= configStatus.lastReloadSource || '-' %><br>
+    <% if (configStatus.lastError) { %>
+      <span style="color: red;">❌ Error: <%= configStatus.lastError %></span>
+    <% } %>
+  </div>
+  
+  <form action="/admin/settings" method="POST">
+    
+    <!-- TELEGRAM -->
+    <div style="margin-bottom: 2rem;">
+      <h4 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Telegram Config</h4>
+      
+      <div class="form-group">
+        <label for="botToken">Bot Token</label>
+        <input type="password" id="botToken" name="botToken" value="<%= settings.telegram.botToken %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="botUsername">Bot Username</label>
+        <input type="text" id="botUsername" name="botUsername" value="<%= settings.telegram.botUsername %>" required>
+      </div>
+    </div>
+
+    <!-- YOU API -->
+    <div style="margin-bottom: 2rem;">
+      <h4 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">You.com API</h4>
+      
+      <div class="form-group">
+        <label for="youApiKey">API Key</label>
+        <input type="password" id="youApiKey" name="youApiKey" value="<%= settings.youApi.apiKey %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="youApiMode">Mode</label>
+        <select id="youApiMode" name="youApiMode" class="form-control" style="width:100%; padding: 0.5rem;">
+          <option value="research" <%= settings.youApi.mode === 'research' ? 'selected' : '' %>>Research API (/v1/research)</option>
+          <option value="search" <%= settings.youApi.mode === 'search' ? 'selected' : '' %>>Search API (/v1/search)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="youApiResearchEndpoint">Research Endpoint</label>
+        <input type="text" id="youApiResearchEndpoint" name="youApiResearchEndpoint" value="<%= settings.youApi.researchEndpoint %>">
+      </div>
+
+      <div class="form-group">
+        <label for="youApiSearchEndpoint">Search Endpoint</label>
+        <input type="text" id="youApiSearchEndpoint" name="youApiSearchEndpoint" value="<%= settings.youApi.searchEndpoint %>">
+      </div>
+
+      <div class="form-group">
+        <label for="youApiTimeoutMs">Timeout (ms)</label>
+        <input type="number" id="youApiTimeoutMs" name="youApiTimeoutMs" value="<%= settings.youApi.timeoutMs %>" required>
+      </div>
+    </div>
+
+    <!-- WEB DASHBOARD -->
+    <div style="margin-bottom: 2rem;">
+      <h4 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Web Dashboard</h4>
+      
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" id="webEnabled" name="webEnabled" <%= settings.web.enabled ? 'checked' : '' %>>
+        <label for="webEnabled" style="margin: 0;">Aktifkan Web Dashboard</label>
+      </div>
+
+      <div class="form-group">
+        <label for="webPort">Port</label>
+        <input type="number" id="webPort" name="webPort" value="<%= settings.web.port %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="webBaseUrl">Base URL</label>
+        <input type="text" id="webBaseUrl" name="webBaseUrl" value="<%= settings.web.baseUrl %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="webSessionSecret">Session Secret</label>
+        <input type="password" id="webSessionSecret" name="webSessionSecret" value="********" required>
+        <small class="text-muted">Biarkan "********" jika tidak ingin diubah.</small>
+      </div>
+    </div>
+
+    <!-- BOT SETTINGS -->
+    <div style="margin-bottom: 2rem;">
+      <h4 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Bot Preferences</h4>
+      
+      <div class="form-group">
+        <label for="botName">Nama Bot</label>
+        <input type="text" id="botName" name="botName" value="<%= settings.bot.name %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="botWelcomeMessage">Pesan Welcome</label>
+        <textarea id="botWelcomeMessage" name="botWelcomeMessage" rows="4" required><%= settings.bot.welcomeMessage %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="botUserDailyLimit">Limit Request Harian User Biasa</label>
+        <input type="number" id="botUserDailyLimit" name="botUserDailyLimit" value="<%= settings.bot.userDailyLimit %>" required>
+      </div>
+
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" id="botMaintenanceMode" name="botMaintenanceMode" <%= settings.bot.maintenanceMode ? 'checked' : '' %>>
+        <label for="botMaintenanceMode" style="margin: 0;">Maintenance Mode</label>
+      </div>
+
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" id="botAllowPrivateAi" name="botAllowPrivateAi" <%= settings.bot.allowPrivateAi ? 'checked' : '' %>>
+        <label for="botAllowPrivateAi" style="margin: 0;">Izinkan AI Private</label>
+      </div>
+
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" id="botAllowGroupAi" name="botAllowGroupAi" <%= settings.bot.allowGroupAi ? 'checked' : '' %>>
+        <label for="botAllowGroupAi" style="margin: 0;">Izinkan AI Group</label>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <% if (adminRole === 'super_admin') { %>
+    <div style="margin-bottom: 2rem;">
+      <h4 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Admin Roles</h4>
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" id="adminAllowOperatorEditSettings" name="adminAllowOperatorEditSettings" <%= settings.admin.allowOperatorEditSettings ? 'checked' : '' %>>
+        <label for="adminAllowOperatorEditSettings" style="margin: 0;">Izinkan Operator Edit Settings</label>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (adminRole === 'super_admin' || settings.admin.allowOperatorEditSettings) { %>
+      <button type="submit" class="btn" style="width: 100%;">Simpan Pengaturan</button>
+    <% } else { %>
+      <p style="color: red; text-align: center;">Hanya Super Admin yang dapat menyimpan pengaturan.</p>
+    <% } %>
+  </form>
+</div>
+
+<%- include('footer') %>

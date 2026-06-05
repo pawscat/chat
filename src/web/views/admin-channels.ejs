@@ -1,0 +1,55 @@
+<%- include('header') %>
+
+<h3>Manage Channels</h3>
+
+<div class="card table-responsive">
+  <input type="text" id="searchChannel" placeholder="Cari Chat ID atau Title..." style="max-width: 300px; margin-bottom: 1rem;">
+  
+  <table id="channelsTable">
+    <thead>
+      <tr>
+        <th>Chat ID</th>
+        <th>Title</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Terakhir Aktif</th>
+        <th>Can Broadcast</th>
+        <th>Last Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% channels.forEach(c => { %>
+        <tr>
+          <td><code><%= c.chat_id %></code></td>
+          <td><%= c.title || '-' %></td>
+          <td><%= c.username ? '@' + c.username : '-' %></td>
+          <td><span class="badge <%= c.status === 'active' ? 'badge-active' : 'badge-inactive' %>"><%= c.status %></span></td>
+          <td><%= new Date(c.last_active).toLocaleString('id-ID') %></td>
+          <td><%= c.can_send_message ? '✅ Ya' : '❌ Tidak' %></td>
+          <td style="color: var(--danger);"><%= c.last_broadcast_error || '-' %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.getElementById('searchChannel').addEventListener('keyup', function() {
+    let filter = this.value.toUpperCase();
+    let rows = document.querySelector("#channelsTable tbody").rows;
+    
+    for (let i = 0; i < rows.length; i++) {
+      let idCol = rows[i].cells[0].textContent;
+      let titleCol = rows[i].cells[1].textContent;
+      
+      if (idCol.toUpperCase().indexOf(filter) > -1 || 
+          titleCol.toUpperCase().indexOf(filter) > -1) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+  });
+</script>
+
+<%- include('footer') %>

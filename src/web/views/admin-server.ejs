@@ -1,0 +1,50 @@
+<%- include('header') %>
+
+<h3>Server Status</h3>
+
+<div class="grid">
+  <!-- RAM -->
+  <div class="card">
+    <div class="card-title">Memory (RAM)</div>
+    <div class="card-value"><%= stats.ram.percent %>% Used</div>
+    <div class="text-muted" style="margin-top: 0.5rem;">
+      <div>Total: <%= stats.ram.total %></div>
+      <div>Used: <%= stats.ram.used %></div>
+      <div>Free: <%= stats.ram.free %></div>
+    </div>
+  </div>
+
+  <!-- CPU -->
+  <div class="card">
+    <div class="card-title">CPU Load</div>
+    <div class="card-value"><%= stats.cpu.load1m %></div>
+    <div class="text-muted" style="margin-top: 0.5rem;">
+      <div>1 min: <%= stats.cpu.load1m %></div>
+      <div>5 min: <%= stats.cpu.load5m %></div>
+      <div>15 min: <%= stats.cpu.load15m %></div>
+    </div>
+  </div>
+
+  <!-- Uptime -->
+  <div class="card">
+    <div class="card-title">Uptime</div>
+    <div class="card-value"><%= stats.os.uptime %></div>
+    <div class="text-muted" style="margin-top: 0.5rem;">
+      <div>Bot Uptime: <%= stats.process.uptime %></div>
+      <div>Internal Ping: <%= stats.ping %></div>
+    </div>
+  </div>
+
+  <!-- System Info -->
+  <div class="card">
+    <div class="card-title">System Info</div>
+    <div class="text-muted" style="margin-top: 0.5rem;">
+      <div>Platform: <%= stats.os.platform %> (<%= stats.os.arch %>)</div>
+      <div>Node Version: <%= stats.process.version %></div>
+      <div>PID: <%= stats.process.pid %></div>
+      <div>Process Memory: <%= stats.process.memory %></div>
+    </div>
+  </div>
+</div>
+
+<%- include('footer') %>

@@ -1,0 +1,43 @@
+<%- include('header') %>
+
+<h3>API Usage & Analytics</h3>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-title">All Time Requests</div>
+    <div class="card-value"><%= api.total_requests %></div>
+    <div class="text-muted" style="margin-top: 0.5rem;">
+      <span style="color: var(--success)">✅ <%= api.success_requests %> Success</span> <br>
+      <span style="color: var(--danger)">❌ <%= api.failed_requests %> Failed</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">This Month Limit</div>
+    <div class="card-value"><%= api.monthly_requests %> / <%= settings.api_limit_monthly %></div>
+    <div class="progress-container">
+      <% const pct = Math.min(100, (api.monthly_requests / settings.api_limit_monthly) * 100); %>
+      <div class="progress-bar" style="width: <%= pct %>%; background-color: <%= pct > 90 ? 'var(--danger)' : (pct > 70 ? 'var(--warning)' : 'var(--primary-color)') %>"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Performance</div>
+    <div class="card-value"><%= api.average_response_time_ms %> ms</div>
+    <div class="text-muted">Average Response Time</div>
+  </div>
+</div>
+
+<div class="card">
+  <h4 style="margin-bottom: 1rem;">Last Error Recorded</h4>
+  <% if (api.last_error) { %>
+    <div class="alert alert-danger">
+      <strong><%= new Date(api.last_error.timestamp).toLocaleString('id-ID') %>:</strong> <br>
+      <%= api.last_error.message %>
+    </div>
+  <% } else { %>
+    <p>No errors recorded yet.</p>
+  <% } %>
+</div>
+
+<%- include('footer') %>
