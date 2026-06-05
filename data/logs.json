@@ -1,0 +1,27 @@
+[
+  {
+    "id": "log_1780682740824_127",
+    "type": "info",
+    "message": "Backup completed successfully. 10 files backed up to D:\\0 AI\\tele\\telegram-you-ai-bot\\data\\backups\\backup_1780682740814",
+    "details": {},
+    "created_at": "2026-06-05T18:05:40.824Z"
+  },
+  {
+    "id": "log_1780682769741_354",
+    "type": "info",
+    "message": "Backup completed successfully. 10 files backed up to D:\\0 AI\\tele\\telegram-you-ai-bot\\data\\backups\\backup_1780682769732",
+    "details": {},
+    "created_at": "2026-06-05T18:06:09.741Z"
+  },
+  {
+    "id": "log_1780682770817_125",
+    "type": "error",
+    "message": "Failed to start bot",
+    "details": {
+      "name": "Error",
+      "message": "404: Not Found",
+      "stack": "Error: 404: Not Found\n    at Telegram.callApi (D:\\0 AI\\tele\\telegram-you-ai-bot\\node_modules\\telegraf\\lib\\core\\network\\client.js:315:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Telegraf.launch (D:\\0 AI\\tele\\telegram-you-ai-bot\\node_modules\\telegraf\\lib\\telegraf.js:188:78)"
+    },
+    "created_at": "2026-06-05T18:06:10.817Z"
+  }
+]

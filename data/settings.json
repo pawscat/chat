@@ -1,0 +1,10 @@
+{
+  "maintenance_mode": false,
+  "allow_private_ai": true,
+  "allow_group_ai": true,
+  "user_daily_limit": 50,
+  "broadcast_delay_ms": 700,
+  "api_limit_monthly": 1000,
+  "bot_name": "You AI Bot",
+  "welcome_message": "Halo, saya bot AI. Kirim pertanyaan kamu sekarang."
+}
